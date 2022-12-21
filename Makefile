@@ -2,7 +2,7 @@ CC := g++
 NAME := Rubics_cube
 CFLAGS := -Wall -Wextra -Werror -pedantic -std=c++14
 LINT := cpplint
-LINT_FLAGS := --filter=-runtime/references,-build/c++11,-build/include_what_you_use,-build/include,-whitespace/tab --root=.
+LINT_FLAGS := --filter=-runtime/references,-build/c++11,-build/include_what_you_use --root=.
 DEBUG_PARAM :=
 HEADERS := libqm.hpp matrix.hpp random.hpp rubics.hpp timer.hpp
 LINKS :=

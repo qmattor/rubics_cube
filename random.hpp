@@ -17,39 +17,39 @@ namespace libqm {
 // floats as well as their derivatives. this in essence simplifies the error
 // messages to the template declaration and the line it that casued it
 template <typename T,
-	typename =
-	typename std::enable_if<std::is_integral<T>::value ||
-	std::is_floating_point<T>::value>::type>
+  typename =
+  typename std::enable_if<std::is_integral<T>::value ||
+  std::is_floating_point<T>::value>::type>
 class rand_obj {
  private:
-	std::default_random_engine *generator;
-	std::uniform_int_distribution<T> *distribution;
+  std::default_random_engine *generator;
+  std::uniform_int_distribution<T> *distribution;
 
  public:
-	rand_obj() {
-		unsigned int seed =
-				std::chrono::system_clock::now().time_since_epoch().count();
-		this->generator = new std::default_random_engine(seed);
-		this->distribution =
-				new std::uniform_int_distribution<T>(SHRT_MIN, SHRT_MAX);
-	}
+  rand_obj() {
+    unsigned int seed =
+        std::chrono::system_clock::now().time_since_epoch().count();
+    this->generator = new std::default_random_engine(seed);
+    this->distribution =
+        new std::uniform_int_distribution<T>(SHRT_MIN, SHRT_MAX);
+  }
 
-	rand_obj(T min, T max) {
-		unsigned int seed =
-				std::chrono::system_clock::now().time_since_epoch().count();
-		this->generator = new std::default_random_engine(seed);
-		this->distribution = new std::uniform_int_distribution<T>(min, max);
-	}
+  rand_obj(T min, T max) {
+    unsigned int seed =
+        std::chrono::system_clock::now().time_since_epoch().count();
+    this->generator = new std::default_random_engine(seed);
+    this->distribution = new std::uniform_int_distribution<T>(min, max);
+  }
 
-	~rand_obj() {
-		delete this->distribution;
-		delete this->generator;
-	}
+  ~rand_obj() {
+    delete this->distribution;
+    delete this->generator;
+  }
 
-	T next_rand() {
-		T ret = (*(this->distribution))(*(this->generator));
-		return ret;
-	}
+  T next_rand() {
+    T ret = (*(this->distribution))(*(this->generator));
+    return ret;
+  }
 };
 }  // namespace libqm
 
