@@ -8,6 +8,9 @@
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_CASE(Constructor) {
-	rubics_cube cube;
-	
+  rubics_cube cube;
+  BOOST_CHECK_EQUAL(cube.is_solved(), true);
+  cube.rotate(rubics_cube::direction::up, 0);
+  BOOST_CHECK_EQUAL(cube.is_solved(), false);
+  auto face = cube.get_side(rubics_cube::side::FRONT);
 }
