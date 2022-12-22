@@ -55,8 +55,6 @@ class matrix {
 
 template <class T>
 matrix<T>::matrix() : y(0), x(0) {
-  // this is not for use, matrix shouldn't be initialized
-  // this->matrix = new std::vector<T>();
   this->elements = nullptr;
 }
 
@@ -87,8 +85,8 @@ matrix<T>::matrix(matrix &&other) noexcept {
 }
 
 template <class T>
-matrix<T>::matrix(const matrix<T> &other) {
-  if (*this != other) {
+matrix<T>::matrix(const matrix &other) {
+  if (this != &other) {
     delete this->elements;
     this->y = other.y;
     this->x = other.x;
@@ -101,12 +99,15 @@ matrix<T>::matrix(const matrix<T> &other) {
 
 template <class T>
 matrix<T> &matrix<T>::operator=(const matrix &other) {
-  if (this == other) delete this->elements;
-  this->y = other.y;
-  this->x = other.x;
-  this->elements = new std::vector<T>(this->y * this->x);
-  std::copy(
+  if (this != &other) {
+    delete this->elements;
+    this->y = other.y;
+    this->x = other.x;
+    this->elements = new std::vector<T>(this->y * this->x);
+    std::copy(
       other.elements->begin(), other.elements->end(), this->elements->begin());
+  }
+  return *this;
 }
 
 template <class T>

@@ -15,7 +15,6 @@
 rubics_cube::rubics_cube() {
   for (uint8_t i = 0; i < 6; i++) {
     this->sides.push_back(new libqm::matrix<uint8_t>(3, 3, i));
-    std::cout << *(this->sides.at(i)) << std::endl;
   }
 }
 
@@ -125,15 +124,14 @@ void rubics_cube::rotate(direction d, uint8_t select) {
 }
 
 libqm::matrix<uint8_t> rubics_cube::get_side(side s) {
-  std::cout << "test" << std::endl << static_cast<size_t>(s) << std::endl;
-  auto tmp = *(this->sides.at(static_cast<size_t>(s)));
-  std::cout << "test" << std::endl;
+  libqm::matrix<uint8_t> tmp;
+  tmp = *(this->sides.at(static_cast<size_t>(s)));
   return tmp;
 }
 
 bool rubics_cube::is_solved() {
   for (auto m : this->sides)
-    if (m->foreach([m](uint8_t x){return (m->at(0, 0) == x);}))
+    if (!m->foreach([m](uint8_t x){ return (m->at(0, 0) == x); }))
       return false;
   return true;
 }
