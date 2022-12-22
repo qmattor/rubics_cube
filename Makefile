@@ -1,15 +1,15 @@
 CC := g++
 NAME := Rubics_cube
-CFLAGS := -Wall -Wextra -Werror -pedantic -std=c++14
+CFLAGS := -Wall -Wextra -Werror -pedantic -std=c++14 -D GL_SILENCE_DEPRECATION
 LINT := cpplint
-LINT_FLAGS := --filter=-runtime/references,-build/c++11,-build/include_what_you_use --root=.
+LINT_FLAGS := --filter=-runtime/references,-build/c++11,-build/include_what_you_use,-build/include_order --root=.
 DEBUG_PARAM :=
-HEADERS := libqm.hpp matrix.hpp random.hpp rubics.hpp timer.hpp
+HEADERS := headers/libqm.hpp headers/matrix.hpp headers/random.hpp headers/rubics.hpp headers/timer.hpp
 LINKS :=
-SRC := rubics.cpp
-SOURCE := main.cpp $(SRC)
+SRC := src/rubics.cpp
+SOURCE := src/main.cpp $(SRC)
 ALL_SRC := $(SOURCE) $(HEADERS)
-TEST := test.cpp $(SRC)
+TEST := src/test.cpp $(SRC)
 
 
 OBJECTS := $(patsubst %.cpp,%.o,$(SOURCE))
@@ -23,7 +23,7 @@ all: $(NAME)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): lint $(OBJECTS)
-	$(CC) $(LIBFT) $(OBJECTS) $(CFLAGS) $(LINKS) -o $(NAME)
+	$(CC) $(LIBFT) $(OBJECTS) $(CFLAGS) $(LINKS) -o $(NAME) -framework GLUT -framework OpenGL
 
 tests: test
 test: $(TEST_OBJ)
