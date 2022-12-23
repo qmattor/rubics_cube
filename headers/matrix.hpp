@@ -43,6 +43,12 @@ class matrix {
   size_t get_size();
   T &at(size_t x, size_t y);
   T at(size_t x, size_t y) const;
+
+  // iterator stuff
+  // just pass this stuff up
+  typename std::vector<T>::iterator begin();
+  typename std::vector<T>::iterator end();
+
   bool foreach(std::function<bool(T &)>);
   bool contains(const T ele);
   bool contains(std::function<bool(T)> func);
@@ -104,8 +110,8 @@ matrix<T> &matrix<T>::operator=(const matrix &other) {
     this->y = other.y;
     this->x = other.x;
     this->elements = new std::vector<T>(this->y * this->x);
-    std::copy(
-      other.elements->begin(), other.elements->end(), this->elements->begin());
+    std::copy(other.elements->begin(), other.elements->end(),
+              this->elements->begin());
   }
   return *this;
 }
@@ -183,6 +189,14 @@ bool matrix<T>::operator==(const matrix &other) {
     return false;
   }
   return true;
+}
+template <class T>
+typename std::vector<T>::iterator matrix<T>::begin() {
+  return elements->begin();
+}
+template <class T>
+typename std::vector<T>::iterator matrix<T>::end() {
+  return elements->end();
 }
 
 template <class T>

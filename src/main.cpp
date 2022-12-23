@@ -5,46 +5,57 @@
 
 #include "../headers/rubics.hpp"
 
-void init(void) { glClearColor(1.0, 1.0, 0, 1.0); }
+// Ok so if I just treat the whole program like an object
+// then global context would effectively just be an object
+// variable. Now that I'm saying it, I don't really see
+// why globals are so hated.
+
+int window_id;
+rubics_cube *cube;
+
+void init(void) {}
 
 void display(void) {
-  glBegin(GL_POLYGON);
-  glColor3f(1, 0, 0);
-  glVertex3f(-0.6, -0.75, 0.5);
-  glVertex3f(0.6, -0.75, 0);
-  glVertex3f(0, 0.75, 0);
-  glEnd();
+  glClear(GL_COLOR_BUFFER_BIT);
+  cube->display();
   glFlush();
   glutSwapBuffers();
 }
 
-// void reshape(int w, int h) {
-
-// }
-
 // mouse x and y at time of press
 void keyboard(unsigned char key, int x, int y) {
   std::cout << x << ", " << y << std::endl;
-  switch (key) {}
+  switch (key) {
+    case 27:
+      glutDestroyWindow(window_id);
+      exit(0);
+      break;
+    case 'a':
+      cube->rotate(rubics_cube::direction::left, 0);
+      break;
+    case 's':
+      cube->rotate(rubics_cube::direction::down, 0);
+      break;
+    case 'd':
+      cube->rotate(rubics_cube::direction::right, 0);
+      break;
+    case 'w':
+      cube->rotate(rubics_cube::direction::up, 0);
+      break;
+  }
+  glutPostRedisplay();
 }
 
 int main(int argc, char **argv) {
-  rubics_cube cube;
+  cube = new rubics_cube();
   glutInit(&argc, argv);
-  // Select Pixel Format Attributes
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-  // Configure Window
   glutInitWindowSize(640, 480);
   glutInitWindowPosition(100, 100);
-  // Create the Window and Set up Rendering Context
-  glutCreateWindow(argv[0]);
-  // Configure Rendering Context
+  window_id = glutCreateWindow(argv[0]);
   init();
-  // Connect callback functions that will respond to events
   glutDisplayFunc(display);
-  // glutReshapeFunc(reshape);
   glutKeyboardFunc(keyboard);
-  // // Start listening for events
   glutMainLoop();
   return 0;
 }

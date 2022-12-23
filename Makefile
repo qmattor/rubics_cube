@@ -2,11 +2,11 @@ CC := g++
 NAME := Rubics_cube
 CFLAGS := -Wall -Wextra -Werror -pedantic -std=c++14 -D GL_SILENCE_DEPRECATION
 LINT := cpplint
-LINT_FLAGS := --filter=-runtime/references,-build/c++11,-build/include_what_you_use,-build/include_order --root=.
+LINT_FLAGS := --filter=-runtime/references,-build/c++11,-build/include_what_you_use,-build/include_order,-build/header_guard --root=.
 DEBUG_PARAM :=
-HEADERS := headers/libqm.hpp headers/matrix.hpp headers/random.hpp headers/rubics.hpp headers/timer.hpp
+HEADERS := headers/libqm.hpp headers/matrix.hpp headers/random.hpp headers/rubics.hpp headers/timer.hpp headers/cube.hpp
 LINKS :=
-SRC := src/rubics.cpp
+SRC := src/rubics.cpp src/cube.cpp
 SOURCE := src/main.cpp $(SRC)
 ALL_SRC := $(SOURCE) $(HEADERS)
 TEST := src/test.cpp $(SRC)

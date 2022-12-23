@@ -1,21 +1,15 @@
 // Quincy Mattor
 // Copyright 2022
 
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#include <stdlib.h>
-#else
-#include <GL/glut.h>
-#endif
-
 #include <iostream>
 
+#include "./cube.hpp"
 #include "./libqm.hpp"
 
 #ifndef RUBICS_HPP_
 #define RUBICS_HPP_
 
-#define storage_type uint16_t
+#define storage_type Cube
 
 class rubics_cube {
  private:
@@ -26,7 +20,7 @@ class rubics_cube {
   enum class side : char { TOP = 0, BOTTOM, LEFT, RIGHT, BACK, FRONT };
   rubics_cube();
   explicit rubics_cube(std::vector<libqm::matrix<storage_type> *> &start_pos);
-  void rotate(direction d, storage_type select);
+  void rotate(direction d, uint8_t select);
   libqm::matrix<storage_type> get_side(side s);
   bool is_solved();
   void display();

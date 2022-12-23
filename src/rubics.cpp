@@ -13,8 +13,17 @@
 
 #pragma region Public
 rubics_cube::rubics_cube() {
-  for (storage_type i = 0; i < 6; i++) {
-    this->sides.push_back(new libqm::matrix<storage_type>(3, 3, i));
+  for (uint8_t i = 0; i < 6; i++) {
+    this->sides.push_back(new libqm::matrix<storage_type>(3, 3));
+    for (int y = 0; y < 3; y++) {
+      for (int x = 0; x < 3; x++) {
+        this->sides.back()->at(x, y).set_sideval(i);
+        this->sides.back()->at(x, y).set_l(.1);
+        this->sides.back()->at(x, y).set_w(.1);
+        this->sides.back()->at(x, y).set_x(x / 5.f);
+        this->sides.back()->at(x, y).set_y(y / 5.f);
+      }
+    }
   }
 }
 
@@ -26,8 +35,8 @@ rubics_cube::rubics_cube(
   std::copy(start_pos.begin(), start_pos.end(), this->sides.begin());
 }
 
-// todo:
-void rubics_cube::rotate(direction d, storage_type select) {
+// todo: make this less of a shit show?
+void rubics_cube::rotate(direction d, uint8_t select) {
   if (select > 2)  // should make this dynamic so can have large cubes
     throw std::out_of_range("select value out of range");
   storage_type tiles[3];
@@ -127,10 +136,15 @@ libqm::matrix<storage_type> rubics_cube::get_side(side s) {
 
 bool rubics_cube::is_solved() {
   for (auto m : this->sides)
-    if (!m->foreach([m](storage_type x) { return (m->at(0, 0) == x); }))
+    if (!m->foreach([m](storage_type x) {
+          return (m->at(0, 0).get_sideval() == x.get_sideval());
+        }))
       return false;
   return true;
 }
 
-void rubics_cube::display() {}
+void rubics_cube::display() {
+  libqm::matrix<uint16_t> x(1, 1);
+  for (auto c : (*this->sides.at(static_cast<size_t>(side::FRONT)))) c.draw(x);
+}
 #pragma endregion
