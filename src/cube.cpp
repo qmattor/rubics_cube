@@ -17,7 +17,7 @@ void Cube::draw(const libqm::matrix<uint16_t> &camera) {
   // aka just using the camera is a geometric transformation
   // HOWEVER, for this to work I need to translate the cube into a matrix
   (void)camera;
-  glBegin(GL_QUADS);
+  glBegin(GL_TRIANGLES);
   switch (this->side_val % 6) {
     case 0:
       glColor3f(1, 0, 0);
@@ -41,7 +41,9 @@ void Cube::draw(const libqm::matrix<uint16_t> &camera) {
   glVertex2f(this->x, this->y);
   glVertex2f(this->x + this->length, this->y);
   glVertex2f(this->x, this->y + this->width);
+
+  glVertex2f(this->x + this->length, this->y);
+  glVertex2f(this->x, this->y + this->width);
   glVertex2f(this->x + this->length, this->y + this->width);
   glEnd();
-  // despite that, I'm going to start with a 2d view model and work from there
 }

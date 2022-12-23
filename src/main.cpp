@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
   cube = new rubics_cube();
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-  glutInitWindowSize(640, 480);
+  glutInitWindowSize(640, 640);
   glutInitWindowPosition(100, 100);
   window_id = glutCreateWindow(argv[0]);
   init();
