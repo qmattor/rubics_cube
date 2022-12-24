@@ -12,12 +12,13 @@
 
 int window_id;
 rubics_cube *cube;
+libqm::matrix<double> *camera;
 
 void init(void) {}
 
 void display(void) {
   glClear(GL_COLOR_BUFFER_BIT);
-  cube->display();
+  cube->display(*camera);
   glFlush();
   glutSwapBuffers();
 }
@@ -30,23 +31,54 @@ void keyboard(unsigned char key, int x, int y) {
       glutDestroyWindow(window_id);
       exit(0);
       break;
+    case 'A':
     case 'a':
-      cube->rotate(rubics_cube::direction::left, 0);
+      cube->rotate(rubics_cube::direction::left, (key == 'A') * 2);
       break;
+    case 'S':
     case 's':
-      cube->rotate(rubics_cube::direction::down, 0);
+      cube->rotate(rubics_cube::direction::down, (key == 'S') * 2);
       break;
+    case 'D':
     case 'd':
-      cube->rotate(rubics_cube::direction::right, 0);
+      cube->rotate(rubics_cube::direction::right, (key == 'D') * 2);
       break;
+    case 'W':
     case 'w':
-      cube->rotate(rubics_cube::direction::up, 0);
+      cube->rotate(rubics_cube::direction::up, (key == 'W') * 2);
       break;
   }
   glutPostRedisplay();
 }
 
+void keyReleased(unsigned char key, int x, int y) {
+  std::cout << key << " released " << x << ", " << y << std::endl;
+  switch (key) {
+    default:
+      break;
+  }
+}
+
+void mouse_func(int button, int state, int x, int y) {
+  (void)state;
+  switch (button) {
+    case GLUT_LEFT_BUTTON:
+      break;
+    case GLUT_RIGHT_BUTTON:
+      break;
+    case GLUT_MIDDLE_BUTTON:
+      break;
+    default:
+      break;
+  }
+  std::cout << "in mouse func " << x << ", " << y << std::endl;
+}
+
 int main(int argc, char **argv) {
+  camera = new libqm::matrix<double>(3, 3, 0);
+  camera->at(0, 0) = 1;
+  camera->at(1, 1) = 1;
+  camera->at(2, 2) = 1;
   cube = new rubics_cube();
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
@@ -56,6 +88,10 @@ int main(int argc, char **argv) {
   init();
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
+  glutKeyboardUpFunc(keyReleased);
+  glutMouseFunc(mouse_func);
   glutMainLoop();
+  delete cube;
+  delete camera;
   return 0;
 }

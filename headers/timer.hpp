@@ -6,6 +6,9 @@
 #ifndef TIMER_HPP_
 #define TIMER_HPP_
 
+// so yes I'm aware that it's standard practice to not keep code in headers but
+// the alternative is to put it as a dylib which seems like a worse option
+
 namespace libqm {
 class timer {
  protected:
@@ -20,7 +23,7 @@ class timer {
     this->prior_accum += clock() - this->start_time;
     this->is_paused = true;
   }
-  void resume()  {
+  void resume() {
     if (!this->is_paused) return;
     this->start_time = clock();
     this->is_paused = false;
@@ -30,21 +33,21 @@ class timer {
     this->prior_accum = 0;
   }
   bool get_is_paused() const { return this->is_paused; }
-  double get_sec() const  {
+  double get_sec() const {
     if (this->is_paused)
-    return static_cast<double>(this->prior_accum) / CLOCKS_PER_SEC;
+      return static_cast<double>(this->prior_accum) / CLOCKS_PER_SEC;
     else
-    return static_cast<double>((clock() - this->start_time) +
-                   this->prior_accum) /
-         CLOCKS_PER_SEC;
+      return static_cast<double>((clock() - this->start_time) +
+                                 this->prior_accum) /
+             CLOCKS_PER_SEC;
   }
   double get_min() const {
     if (this->is_paused)
-    return static_cast<double>(this->prior_accum) / (CLOCKS_PER_SEC * 60);
+      return static_cast<double>(this->prior_accum) / (CLOCKS_PER_SEC * 60);
     else
-    return static_cast<double>((clock() - this->start_time) +
-                   this->prior_accum) /
-         (CLOCKS_PER_SEC * 60);
+      return static_cast<double>((clock() - this->start_time) +
+                                 this->prior_accum) /
+             (CLOCKS_PER_SEC * 60);
   }
   int get_ticks() const {
     return (clock() - this->start_time) + this->prior_accum;

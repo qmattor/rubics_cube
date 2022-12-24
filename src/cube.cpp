@@ -3,16 +3,19 @@
 
 #include "../headers/cube.hpp"
 
-Cube::Cube() : side_val(0), x(0), y(0), length(0), width(0) {}
+Tile::Tile() : side_val(0), xyz(1, 3, 0), length(0), width(0) {}
 
-Cube::Cube(uint8_t v) : side_val(v), x(0), y(0), length(0), width(0) {}
+Tile::Tile(uint8_t v) : side_val(v), xyz(1, 3, 0), length(0), width(0) {}
 
-Cube::Cube(uint8_t v, double l, double w, double h)
-    : side_val(v), x(0), y(0), length(l), width(w) {
-  (void)h;
+Tile::Tile(uint8_t side, double x, double y, double z, double length,
+           double width)
+    : side_val(side), xyz(1, 3, 0), length(length), width(width) {
+  this->xyz(0, 0) = x;
+  this->xyz(0, 1) = y;
+  this->xyz(0, 2) = z;
 }
 
-void Cube::draw(const libqm::matrix<uint16_t> &camera) {
+void Tile::draw(const libqm::matrix<double> &camera) {
   // ok so basically we just skew everything by the camera angle
   // aka just using the camera is a geometric transformation
   // HOWEVER, for this to work I need to translate the cube into a matrix
@@ -38,12 +41,12 @@ void Cube::draw(const libqm::matrix<uint16_t> &camera) {
       glColor3f(0, 1, 1);
       break;
   }
-  glVertex2f(this->x, this->y);
-  glVertex2f(this->x + this->length, this->y);
-  glVertex2f(this->x, this->y + this->width);
+  glVertex3f(X, Y, Z);
+  glVertex3f(X + this->length, Y, Z);
+  glVertex3f(X, Y + this->width, Z);
 
-  glVertex2f(this->x + this->length, this->y);
-  glVertex2f(this->x, this->y + this->width);
-  glVertex2f(this->x + this->length, this->y + this->width);
+  glVertex3f(X + this->length, Y, Z);
+  glVertex3f(X, Y + this->width, Z);
+  glVertex3f(X + this->length, Y + this->width, Z);
   glEnd();
 }

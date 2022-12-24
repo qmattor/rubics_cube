@@ -94,10 +94,13 @@ matrix<T>::matrix(const matrix &other) {
 
 template <class T>
 matrix<T> &matrix<T>::operator=(const matrix &other) {
-  if (this != &other) {
-    this->elements.clear();
+  if (*this != other) {
     this->y = other.y;
     this->x = other.x;
+    std::cout << "test 2" << std::endl;
+    for (size_t i = 0; i < other.elements.size(); i++)
+      this->elements.push_back(other.elements.at(i));
+    std::cout << "test 3" << std::endl;
     std::copy(
         other.elements.begin(), other.elements.end(), this->elements.begin());
   }
@@ -239,9 +242,9 @@ std::ostream &operator<<(std::ostream &out, const matrix<T> &m) {
 // matrix cross product
 template <class T>
 matrix<T> matrix<T>::operator*(const matrix<T> &other) {
-  if (other.x != this->x || other.y != this->y || other.y != this->x ||
-      other.x != this->y)
-    throw std::runtime_error("Matrix mismatch");
+  // if (other.x != this->x || other.y != this->y || other.y != this->x ||
+  //     other.x != this->y)
+  if (other.y != this->x) throw std::runtime_error("Matrix product DNE");
   matrix<T> ret(this->x, this->y);
   for (size_t y = 0; y < this->y; y++) {
     for (size_t x = 0; x < this->x; x++) {

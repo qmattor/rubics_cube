@@ -11,44 +11,44 @@
 #ifndef CUBE_HPP_
 #define CUBE_HPP_
 
-class Cube {
+#define X this->xyz.at(0, 0)
+#define Y this->xyz.at(0, 1)
+#define Z this->xyz.at(0, 2)
+
+class Tile {
  private:
   uint8_t side_val;
-  double x;
-  double y;
-  // double z;
+  libqm::matrix<double> xyz;
   double length;
   double width;
-  // double height;
 
  public:
-  Cube();
-  explicit Cube(uint8_t);
-  Cube(uint8_t, double, double, double);
+  Tile();
+  explicit Tile(uint8_t);
+  Tile(uint8_t side, double x, double y, double z, double length,
+       double width);
   // uuuhhhhhggggg
-  uint8_t get_sideval() { return this->side_val; }
-  double get_x() { return this->x; }
-  double get_y() { return this->y; }
-  double get_l() { return this->length; }
-  double get_w() { return this->width; }
+  uint8_t get_sideval() const { return this->side_val; }
+  double get_x() const { return this->xyz.at(0, 0); }
+  double get_y() const { return this->xyz.at(0, 1); }
+  double get_l() const { return this->length; }
+  double get_w() const { return this->width; }
+  double get_z() const { return this->xyz.at(0, 2); }
   void set_sideval(uint8_t v) { this->side_val = v; }
-  void set_x(double x) { this->x = x; }
-  void set_y(double y) { this->y = y; }
+  void set_x(double x) { this->xyz.at(0, 0) = x; }
+  void set_y(double y) { this->xyz.at(0, 1) = y; }
   void set_l(double l) { this->length = l; }
   void set_w(double w) { this->width = w; }
-  // double get_z() { return this->z; }
-  // void set_z(double z) { this->z = z; }
-  // double get_h() { return this->height; }
-  // void set_h(double h) { this->height = h; }
+  void set_z(double z) { this->xyz.at(0, 2) = z; }
 
-  bool operator==(const Cube &other) {
+  bool operator==(const Tile &other) {
     return this->side_val == other.side_val;
   }
-  bool operator!=(const Cube &other) {
+  bool operator!=(const Tile &other) {
     return this->side_val != other.side_val;
   }
 
-  void draw(const libqm::matrix<uint16_t> &camera);
+  void draw(const libqm::matrix<double> &camera);
 };
 
 #endif  // CUBE_HPP_
